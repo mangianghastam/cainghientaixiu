@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>🎲 Tài Xỉu VIP</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(to right, #e0c3fc, #8ec5fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 500px;
+            animation: fadeIn 0.8s ease-in-out;
+            overflow-y: auto;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .note {
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        input[type="password"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #4CAF50;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: 2px solid #ccc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+
+        .radio-option:hover {
+            border-color: #007bff;
+            background-color: #e6f0ff;
+        }
+
+        .radio-option input[type="radio"] {
+            transform: scale(1.2);
+            accent-color: #007bff;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #43a047;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        #loginMsg {
+            text-align: center;
+            margin-top: 12px;
+            color: red;
+        }
+
+        #game {
+            display: none;
+            margin-top: 20px;
+        }
+
+        #balance {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        #result {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .section {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        #historyTitle {
+            margin-top: 30px;
+            font-size: 16px;
+            text-align: center;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+
+            input[type="password"],
+            input[type="number"],
+            input[type="text"],
+            button {
+                font-size: 18px;
+                padding: 14px;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .radio-group label {
+                font-size: 20px;
+            }
+
+            #result {
+                font-size: 20px;
+            }
+
+            @keyframes shake {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                25% {
+                    transform: rotate(10deg);
+                }
+
+                50% {
+                    transform: rotate(-10deg);
+                }
+
+                75% {
+                    transform: rotate(10deg);
+                }
+
+                100% {
+                    transform: rotate(0deg);
+                }
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>🎰 Tài Xỉu Mini Game</h2>
+        <p class="note">Mật khẩu: <strong>cainghiendi</strong></p>
+
+        <input type="password" id="password" placeholder="Nhập mật khẩu..." />
+        <button onclick="checkPassword()">🔓 Đăng nhập</button>
+        <p id="loginMsg"></p>
+
+        <div id="game">
+            <div class="section">
+                <p>Số dư của bạn: <span id="balance">0</span> VNĐ</p>
+            </div>
+
+            <div class="section">
+                <label>Số tiền muốn cược:</label>
+                <input type="number" id="betAmount" placeholder="Ví dụ: 2000000" min="1">
+            </div>
+
+            <div class="section">
+                <label>Chọn kết quả:</label>
+                <div class="radio-group">
+                    <label class="radio-option"><input type="radio" name="choice" value="TÀI"> 🐯 TÀI</label>
+                    <label class="radio-option"><input type="radio" name="choice" value="XỈU"> 🐭 XỈU</label>
+                </div>
+            </div>
+
+            <button onclick="play()">🎲 Chơi</button>
+            <!-- Chèn trước thẻ <div id="result"> -->
+            <div style="text-align:center; margin-top: 20px;">
+                <img id="diceAnim" src="pngtree-lucky-game-cube-dice-png-image_2899401.jpg" width="60" alt="Xúc xắc"
+                    style="display:none; animation: shake 0.6s infinite;">
+            </div>
+
+            <div id="result"></div>
+
+            <div id="historyTitle">📝 Lịch sử kết quả</div>
+            <table id="history">
+                <tr>
+                    <th>Lần</th>
+                    <th>Số nhà cái</th>
+                    <th>Kết quả</th>
+                    <th>Thắng/Thua</th>
+                </tr>
+            </table>
+            <p id="stats" style="text-align:center; margin-top:20px;"></p>
+
+        </div>
+    </div>
+
+    <script>
+        const CORRECT_PASSWORD = "cainghiendi";
+        let loginAttempts = 0;
+        let balance = 0;
+        let playCount = 0;
+        let winCount = 0, loseCount = 0; // Di chuyển ra ngoài
+    
+        function checkPassword() {
+            const entered = document.getElementById("password").value.trim();
+            const msg = document.getElementById("loginMsg");
+    
+            if (entered === CORRECT_PASSWORD) {
+                msg.style.color = "green";
+                msg.textContent = "✅ Đăng nhập thành công!";
+                balance = Math.floor(Math.random() * (100000000 - 10000000 + 1)) + 10000000;
+                document.getElementById("balance").textContent = balance.toLocaleString();
+                document.getElementById("game").style.display = "block";
+            } else {
+                loginAttempts++;
+                msg.style.color = "red";
+                msg.textContent = loginAttempts >= 6 ? "❌ Vượt quá số lần cho phép!" : "⚠️ Sai mật khẩu! Thử lại.";
+                if (loginAttempts >= 6) document.getElementById("password").disabled = true;
+            }
+        }
+    
+        function play() {
+            const bet = parseInt(document.getElementById("betAmount").value.trim());
+            const choice = document.querySelector('input[name="choice"]:checked');
+    
+            if (!choice) return alert("Vui lòng chọn TÀI hoặc XỈU!");
+            if (isNaN(bet) || bet <= 0) return alert("Nhập số tiền hợp lệ!");
+            if (bet > balance) return alert("Bạn không đủ tiền!");
+    
+            const dice = document.getElementById("diceAnim");
+            dice.style.display = "inline-block";
+            dice.style.animation = "shake 0.6s infinite";
+    
+            setTimeout(() => {
+                dice.style.display = "none";
+                dice.style.animation = "";
+    
+                const userChoice = choice.value;
+                const resultNum = Math.floor(Math.random() * 16) + 3;
+                const outcome = resultNum <= 10 ? "XỈU" : "TÀI";
+                const isWin = userChoice === outcome;
+    
+                let resultMessage = `🎯 Kết quả: <strong>${resultNum} (${outcome})</strong><br>`;
+                if (isWin) {
+                    balance += bet * 2;
+                    resultMessage += `🎉 Bạn THẮNG! 💰 +${(bet * 2).toLocaleString()} VNĐ`;
+                    winCount++;
+                } else {
+                    balance -= bet;
+                    resultMessage += `😢 Bạn THUA! 💸 -${bet.toLocaleString()} VNĐ`;
+                    loseCount++;
+                }
+    
+                playCount++;
+                document.getElementById("balance").textContent = balance.toLocaleString();
+                document.getElementById("result").innerHTML = resultMessage;
+    
+                // Lưu lịch sử
+                const table = document.getElementById("history");
+                const row = table.insertRow();
+                row.insertCell(0).innerText = playCount;
+                row.insertCell(1).innerText = resultNum;
+                row.insertCell(2).innerText = outcome;
+                row.insertCell(3).innerText = isWin ? "Thắng" : "Thua";
+    
+                // Cập nhật thống kê
+                document.getElementById("stats").innerHTML = `
+                    Tổng ván: ${playCount} – 🎉 Thắng: ${winCount} – 😢 Thua: ${loseCount}
+                `;
+    
+                // Reset
+                document.getElementById("betAmount").value = "";
+                document.querySelectorAll('input[name="choice"]').forEach(el => el.checked = false);
+    
+            }, 1000);
+        }
+    </script>
+</body>
+
+</html>
